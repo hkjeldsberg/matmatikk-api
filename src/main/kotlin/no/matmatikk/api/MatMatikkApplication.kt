@@ -7,14 +7,12 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.stereotype.Component
-import java.time.LocalDate
-import java.time.LocalTime
 
 @SpringBootApplication
-class MatmatikkApiApplication
+class MatMatikkApplication
 
 fun main(args: Array<String>) {
-    runApplication<MatmatikkApiApplication>(*args)
+    runApplication<MatMatikkApplication>(*args)
 }
 
 @Component

@@ -5,14 +5,23 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "RECIPES")
 class Recipe(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long = 0,
     private val name: String,
-    private val description: String,
+    private var description: String,
+) {
 
-    ) {
-    internal fun toRecipeResponse() =
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    internal val id: String = ""
+
+    internal fun toResponse() =
         RecipeResponse(id = id, name = name, description = description)
+
+    fun updateDescription(newDescription: String) {
+        description = newDescription
+    }
+
+    companion object {
+        internal fun List<Recipe>.toResponse() = map { it.toResponse() }
+    }
 }
 
