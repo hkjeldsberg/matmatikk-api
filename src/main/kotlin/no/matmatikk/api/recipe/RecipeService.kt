@@ -4,7 +4,6 @@ import no.matmatikk.api.exceptions.RecipeNotFoundException
 import no.matmatikk.api.recipe.model.Recipe
 import no.matmatikk.api.recipe.model.RecipeRequest
 import org.slf4j.LoggerFactory
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -26,7 +25,7 @@ class RecipeService(private val repository: RecipeRepository) {
         repository.delete(getRecipe(id))
     }
 
-    internal fun updateRecipe(recipeId: String, newDescription: String) {
-        getRecipe(recipeId).updateDescription(newDescription)
+    internal fun updateRecipe(recipeId: String, request: RecipeRequest) {
+        getRecipe(recipeId).updateDescription(request.description)
     }
 }
