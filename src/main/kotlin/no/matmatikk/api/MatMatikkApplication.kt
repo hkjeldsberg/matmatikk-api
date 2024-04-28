@@ -3,6 +3,7 @@ package no.matmatikk.api
 import no.matmatikk.api.recipe.RecipeService
 import no.matmatikk.api.recipe.model.RecipeRequest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -17,10 +18,13 @@ fun main(args: Array<String>) {
 
 @Component
 class LocalCommandLineRunner(
-    @Autowired private val recipeService: RecipeService
+    @Autowired
+    private val recipeService: RecipeService,
+    @Value("\${prefill}")
+    private val prefill: Boolean
 ) : CommandLineRunner {
     override fun run(vararg args: String?) {
-        if (args.contains("PREFILL")) {
+        if (args.contains("PREFILL") || prefill) {
             recipeService.saveRecipe(
                 RecipeRequest(
                     "Sodd",

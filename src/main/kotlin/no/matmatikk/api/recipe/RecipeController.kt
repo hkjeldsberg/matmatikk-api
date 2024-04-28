@@ -18,7 +18,8 @@ class RecipeController(private val service: RecipeService) {
     fun saveRecipe(@RequestBody recipeRequest: RecipeRequest) = service.saveRecipe(recipeRequest).toResponse()
 
     @DeleteMapping("/{id}")
-    fun deleteRecipe(@PathVariable id: String) = service.deleteRecipe(id)
+    fun deleteRecipe(@PathVariable id: String) =
+        service.deleteRecipe(id)
 
     @PutMapping("/{id}")
     fun updateRecipe(@PathVariable id: String, @RequestBody recipeRequest: RecipeRequest) =
