@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: matmatikk-api
+  # DB
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:matmatikk-api
+    username: sa
+    password: password
+  # Prefill
+prefill: true
+
+# Security
+jwt:
+  # key: ${JWT_KEY}
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000
+  key: 5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA # according to SHA-256 requirements

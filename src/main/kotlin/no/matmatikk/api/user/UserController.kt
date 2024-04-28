@@ -1,14 +1,16 @@
 package no.matmatikk.api.user
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import no.matmatikk.api.user.model.UserRequest
+import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 class UserController(
     private val userService: UserService
 ) {
-    @GetMapping
+    @GetMapping("/current")
     fun getCurrentUser() = userService.getCurrentUser()?.toUserResponse()
+
+    @PostMapping("/register")
+    fun registerUser(@RequestBody request: UserRequest) = userService.registerUser(request).toUserResponse()
 }

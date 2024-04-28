@@ -2,6 +2,7 @@ package no.matmatikk.api.recipe
 
 import no.matmatikk.api.recipe.model.Recipe.Companion.toRecipeResponse
 import no.matmatikk.api.recipe.model.RecipeRequest
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
 @RestController
