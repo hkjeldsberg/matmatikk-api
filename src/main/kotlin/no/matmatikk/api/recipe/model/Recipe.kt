@@ -13,15 +13,15 @@ class Recipe(
     @GeneratedValue(strategy = GenerationType.UUID)
     internal val id: String = ""
 
-    internal fun toResponse() =
+    internal fun toRecipeResponse() =
         RecipeResponse(id = id, name = name, description = description)
 
-    fun updateDescription(newDescription: String) {
-        description = newDescription
+    fun updateRecipeDescription(request: RecipeRequest) {
+        description = request.description
     }
 
     companion object {
-        internal fun List<Recipe>.toResponse() = map { it.toResponse() }
+        internal fun List<Recipe>.toRecipeResponse() = map { it.toRecipeResponse() }
     }
 }
 

@@ -27,5 +27,11 @@ class RecipeNotFoundException(id: String) : CustomRuntimeException(
     status = NOT_FOUND
 )
 
+class UserNotFoundException() : CustomRuntimeException(
+    message = "User not found during login",
+    name = "UserNotFoundException",
+    status = NOT_FOUND
+)
+
 
 
