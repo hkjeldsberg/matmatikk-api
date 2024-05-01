@@ -59,4 +59,8 @@ class InvalidEmailFormatException(email: String) : CustomRuntimeException(
     status = BAD_REQUEST
 )
 
-
+class CustomKafkaException(message: String?) : CustomRuntimeException(
+    message = message ?: "Kafka producer/consumer threw an exception",
+    name = "CustomKafkaException",
+    status = BAD_REQUEST
+)

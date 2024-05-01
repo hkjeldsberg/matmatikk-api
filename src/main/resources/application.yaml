@@ -9,6 +9,12 @@ spring:
     url: jdbc:h2:mem:matmatikk-api
     username: sa
     password: password
+
+# Kafka
+kafka:
+  bootstrap-server: localhost:9092
+  topic: kafka-chat
+
   # Prefill
 prefill: true
 

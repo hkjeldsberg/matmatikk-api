@@ -1,8 +1,7 @@
 package no.matmatikk.api.config
 
-import no.matmatikk.api.user.UserRepository
 import no.matmatikk.api.auth.CustomUserDetailsService
-import no.matmatikk.api.user.EmailValidator
+import no.matmatikk.api.user.UserRepository
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
