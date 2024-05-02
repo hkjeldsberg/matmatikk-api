@@ -41,17 +41,4 @@ class SecurityConfiguration(
 
         return http.build()
     }
-
-    private fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("http://localhost:3000") // Specify the correct origins as needed
-        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        configuration.allowedHeaders = listOf("*")
-        configuration.allowCredentials = true
-        configuration.maxAge = 3600L // Set how long the response from a pre-flight request can be cached by clients
-
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", configuration)
-        return source
-    }
 }
