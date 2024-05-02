@@ -23,7 +23,7 @@ class UserService(
     internal fun getCurrentUser(): User {
         val context = SecurityContextHolder.getContext()
         val id = context.authentication?.name ?: throw UserNotFoundException("Authenticated user ID not found")
-        return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User not found with ID: $id")
+        return userRepository.findByEmail(id) ?: throw UserNotFoundException("User not found with ID: $id")
     }
 
     internal fun registerUser(request: UserRequest): User {

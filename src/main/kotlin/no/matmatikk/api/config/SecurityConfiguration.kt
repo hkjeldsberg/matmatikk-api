@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +27,9 @@ class SecurityConfiguration(
         http {
             headers { frameOptions { disable() } }
             csrf { disable() }
-            authorizeHttpRequests {
+            cors { disable() }
+            authorizeRequests {
+                authorize("/ws/*", permitAll)
                 authorize(HttpMethod.POST, "/auth/login", permitAll)
                 authorize(HttpMethod.POST, "/users/register", permitAll)
                 authorize(anyRequest, authenticated)

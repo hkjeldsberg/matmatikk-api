@@ -1,6 +1,5 @@
 package no.matmatikk.api.message
 
-import no.matmatikk.api.message.model.Message
 import no.matmatikk.api.message.model.MessageRequest
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -15,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController
 class MessageController(
     private val messageProducer: MessageProducer
 ) {
-
     @PostMapping("/send")
     fun sendMessage(@RequestBody messageRequest: MessageRequest) =
-        messageProducer.sendMessage(messageRequest)
+        messageProducer.sendMessage(messageRequest.toMessage())
 
 
     @MessageMapping("/sendMessage")
-    @SendTo("/topic/group")
-    fun broadcastGroupMessage(@Payload message: Message) = message
+    @SendTo("/topic/message")
+    fun broadcastGroupMessage(@Payload messageRequest: MessageRequest) =
+        messageProducer.sendMessage(messageRequest.toMessage())
 }

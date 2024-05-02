@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.9.23"
     kotlin("plugin.spring") version "1.9.23"
     kotlin("plugin.jpa") version "1.9.23"
+    application
 }
 
 group = "no.matmatikk"
@@ -24,6 +25,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.kafka:spring-kafka")
 
     // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
@@ -43,8 +46,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 }
 
-tasks.withType<JavaCompile>() {
-    options.compilerArgs.add("-parameters")
+application {
+    mainClass.set("no.matmatikk.api.MatMatikkApplicationKt")
 }
 
 tasks.withType<KotlinCompile> {

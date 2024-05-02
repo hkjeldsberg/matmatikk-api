@@ -9,7 +9,7 @@ class UserController(
     private val userService: UserService
 ) {
     @GetMapping("/current")
-    fun getCurrentUser() = userService.getCurrentUser()?.toUserResponse()
+    fun getCurrentUser() = userService.getCurrentUser().toUserResponse()
 
     @PostMapping("/register")
     fun registerUser(@RequestBody request: UserRequest) = userService.registerUser(request).toUserResponse()
