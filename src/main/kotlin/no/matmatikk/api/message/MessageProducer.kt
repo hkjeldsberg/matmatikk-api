@@ -2,7 +2,6 @@ package no.matmatikk.api.message
 
 import no.matmatikk.api.exceptions.CustomKafkaException
 import no.matmatikk.api.message.model.Message
-import no.matmatikk.api.message.model.MessageRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -18,9 +17,8 @@ class MessageProducer(
 ) {
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    fun sendMessage(messageRequest: MessageRequest) {
-        val message = messageRequest.toMessage()
-        logger.info("Message sent $message")
+    fun sendMessage(message: Message) {
+        logger.info("Sending message $message")
         try {
             kafkaTemplate.send(topic, message).get()
         } catch (e: InterruptedException) {
