@@ -21,8 +21,8 @@ class ProducerConfiguration(
     @Bean
     fun producerConfigurations() = mapOf(
         ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServer,
-        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java.canonicalName,
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java.canonicalName
+        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java
     )
 
     @Bean
