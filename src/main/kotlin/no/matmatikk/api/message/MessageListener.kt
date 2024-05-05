@@ -17,8 +17,7 @@ class MessageListener {
     lateinit var template: SimpMessagingTemplate
 
     @KafkaListener(
-        topics = ["kafka-chat-caps"],
-        // topics = ["\${kafka.topic}"],
+        topics = ["\${kafka.topic}"],
         groupId = "groupId"
     )
     fun consume(message: Message) {
@@ -28,6 +27,6 @@ class MessageListener {
             sender = message.sender
         ).toMessage()
 
-        template.convertAndSend("/topic/message", newMessage)
+        template.convertAndSend("/topic/message", message)
     }
 }
