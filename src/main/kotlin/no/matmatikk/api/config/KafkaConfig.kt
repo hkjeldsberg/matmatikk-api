@@ -104,9 +104,8 @@ class KafkaConfig(
 
     @Bean
     fun kStream(streamsBuilder: StreamsBuilder): KStream<String, String> {
-        val stream = streamsBuilder.stream<String, String>(topic, Consumed.with(Serdes.String(), Serdes.String()))
+        val stream = streamsBuilder.stream(topic, Consumed.with(Serdes.String(), messageSerde()))
         val processedStream = stream.peek { _, value -> println("Received Message: $value") }
-            .mapValues { value -> value.uppercase() }
 
         processedStream.to("kafka-chat")
         processedStream.print(Printed.toSysOut())
