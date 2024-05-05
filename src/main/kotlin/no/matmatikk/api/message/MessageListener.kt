@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class MessageListener {
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val log: Logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
     lateinit var template: SimpMessagingTemplate
@@ -21,12 +21,12 @@ class MessageListener {
         groupId = "groupId"
     )
     fun consume(message: Message) {
-        logger.info("Message received $message")
+        log.info("Message received $message")
         val newMessage: Message = MessageRequest(
             content = message.content.uppercase(),
             sender = message.sender
         ).toMessage()
 
-        template.convertAndSend("/topic/message", newMessage)
+        template.convertAndSend("/topic/message", message)
     }
 }

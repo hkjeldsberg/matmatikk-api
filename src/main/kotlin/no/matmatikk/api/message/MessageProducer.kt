@@ -15,12 +15,12 @@ class MessageProducer(
     private val topic: String,
     private val kafkaTemplate: KafkaTemplate<String, Message>,
 ) {
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    val log: Logger = LoggerFactory.getLogger(javaClass)
 
     fun sendMessage(message: Message) {
-        logger.info("Sending message $message")
+        log.info("Sending message $message")
         try {
-            kafkaTemplate.send(topic, message).get()
+            kafkaTemplate.send(topic, message)
         } catch (e: InterruptedException) {
             throw CustomKafkaException(e.message)
         } catch (e: ExecutionException) {

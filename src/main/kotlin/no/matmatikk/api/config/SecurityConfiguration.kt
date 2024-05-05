@@ -32,7 +32,7 @@ class SecurityConfiguration(
                 authorize("/ws/*", permitAll)
                 authorize(HttpMethod.POST, "/auth/login", permitAll)
                 authorize(HttpMethod.POST, "/users/register", permitAll)
-                authorize(anyRequest, authenticated)
+                authorize(anyRequest, permitAll)
             }
             sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
         }
