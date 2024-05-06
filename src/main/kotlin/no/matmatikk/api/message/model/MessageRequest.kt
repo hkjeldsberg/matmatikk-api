@@ -9,7 +9,6 @@ data class MessageRequest(
 
     internal fun toMessage() = Message(
         sender = sender,
-        content = content,
-        timestamp = LocalDateTime.now().toString()
+        content = content
     )
 }

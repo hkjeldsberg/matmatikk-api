@@ -10,10 +10,13 @@ spring:
     username: sa
     password: password
 
-# Kafka
+  # Kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+
 kafka:
-  bootstrap-server: localhost:9092
-  topic: kafka-chat
+  topic-in: chat-in
+  topic-out: chat-out
 
   # Prefill
 prefill: true
