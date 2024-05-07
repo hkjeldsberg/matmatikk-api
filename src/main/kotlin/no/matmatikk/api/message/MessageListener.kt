@@ -1,6 +1,7 @@
 package no.matmatikk.api.message
 
 import no.matmatikk.api.message.model.Message
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,11 +19,19 @@ class MessageListener {
 
     @KafkaListener(
         topics = ["\${kafka.topic-out}"],
-        groupId = "chatGroupId"
+        containerFactory = "messageKafkaListenerContainerFactory"
     )
-    fun consume(message: Message) {
-        log.info("Message received ${message.content}")
-        template.convertAndSend("/topic/message", message)
+    fun consumeMessage(messageRecord: ConsumerRecord<String, Message>) {
+        log.info("Message received: ${messageRecord.value().content}")
+        template.convertAndSend("/topic/message", messageRecord.value())
 
+    }
+
+    @KafkaListener(
+        topics = ["\${kafka.topic-count}"],
+        containerFactory = "longKafkaListenerContainerFactory"
+    )
+    fun consumeCount(counterRecord: ConsumerRecord<String, Long>) {
+        log.info("Counter received: ${counterRecord.value()}")
     }
 }

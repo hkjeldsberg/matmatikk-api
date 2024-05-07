@@ -21,7 +21,7 @@ class MessageProducer(
     fun sendMessage(message: Message) {
         log.info("Sending message ${message.content}")
         try {
-            kafkaTemplate.send(topic, message)
+            kafkaTemplate.send(topic, message.sender, message)
         } catch (e: InterruptedException) {
             throw CustomKafkaException(e.message)
         } catch (e: ExecutionException) {

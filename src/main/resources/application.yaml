@@ -17,6 +17,7 @@ spring:
 kafka:
   topic-in: chat-in
   topic-out: chat-out
+  topic-count: chat-count
 
   # Prefill
 prefill: true

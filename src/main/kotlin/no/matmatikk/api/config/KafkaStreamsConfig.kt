@@ -6,6 +6,7 @@ import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
 import org.apache.kafka.streams.kstream.KStream
+import org.apache.kafka.streams.kstream.Produced
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -27,6 +28,8 @@ class KafkaStreamsConfig {
     @Value("\${kafka.topic-out}")
     private lateinit var topicOut: String
 
+    @Value("\${kafka.topic-count}")
+    private lateinit var topicCount: String
 
     @Bean(name = [KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME])
     fun myKafkaStreamsConfig(): KafkaStreamsConfiguration =
@@ -42,12 +45,19 @@ class KafkaStreamsConfig {
         )
 
     @Bean
-    fun kStream(streamsBuilder: StreamsBuilder): KStream<String, Message> {
+    fun kStream(streamsBuilder: StreamsBuilder): KStream<String, Message>? {
         val stream = streamsBuilder.stream<String, Message>(topicIn)
-
         stream
+            .peek { k, v -> println("[Stream] Key: $k, Value: ${v.content}") }
             .mapValues { message -> message.copy(content = message.content.uppercase()) }
             .to(topicOut)
+
+        stream
+            .groupByKey()
+            .count()
+            .toStream()
+            .peek { k, v -> println("[Count] Key: $k, Value: $v") }
+            .to(topicCount, Produced.with(Serdes.String(), Serdes.Long()))
 
         return stream
     }
