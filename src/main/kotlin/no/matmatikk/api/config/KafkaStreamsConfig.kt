@@ -38,7 +38,7 @@ class KafkaStreamsConfig {
                 StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG to JsonSerde::class.java,
                 StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG to LogAndContinueExceptionHandler::class.java,
                 JsonDeserializer.TRUSTED_PACKAGES to "no.matmatikk.api.message.model",
-                )
+            )
         )
 
     @Bean
@@ -46,11 +46,7 @@ class KafkaStreamsConfig {
         val stream = streamsBuilder.stream<String, Message>(topicIn)
 
         stream
-            .peek { k, v -> println("Key, value = $k, $v") }
-            .mapValues { message ->
-                println("Message is: ${message.content}")
-                message
-            }
+            .mapValues { message -> message.copy(content = message.content.uppercase()) }
             .to(topicOut)
 
         return stream
