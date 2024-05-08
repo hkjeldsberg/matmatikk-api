@@ -1,5 +1,11 @@
 package no.matmatikk.api.config
 
+import com.aallam.openai.api.chat.ChatCompletionRequest
+import com.aallam.openai.api.chat.ChatMessage
+import com.aallam.openai.api.chat.ChatRole
+import com.aallam.openai.api.model.ModelId
+import com.aallam.openai.client.OpenAI
+import kotlinx.coroutines.runBlocking
 import no.matmatikk.api.message.model.Message
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.StreamsBuilder
@@ -7,6 +13,7 @@ import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
 import org.apache.kafka.streams.kstream.KStream
 import org.apache.kafka.streams.kstream.Produced
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -31,6 +38,9 @@ class KafkaStreamsConfig {
     @Value("\${kafka.topic-count}")
     private lateinit var topicCount: String
 
+    @Autowired
+    private lateinit var openAI: OpenAI
+
     @Bean(name = [KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME])
     fun myKafkaStreamsConfig(): KafkaStreamsConfiguration =
         KafkaStreamsConfiguration(
@@ -49,7 +59,12 @@ class KafkaStreamsConfig {
         val stream = streamsBuilder.stream<String, Message>(topicIn)
         stream
             .peek { k, v -> println("[Stream] Key: $k, Value: ${v.content}") }
-            .mapValues { message -> message.copy(content = message.content.uppercase()) }
+            .mapValues { message ->
+                runBlocking {
+                    val openAIMessage = createChatRequest(message.content)
+                    message.copy(content = openAIMessage ?: message.content.uppercase())
+                }
+            }
             .to(topicOut)
 
         stream
@@ -61,4 +76,19 @@ class KafkaStreamsConfig {
 
         return stream
     }
+
+    private suspend fun createChatRequest(message: String): String? {
+        val request = ChatCompletionRequest(
+            model = ModelId("gpt-3.5-turbo"),
+            messages = listOf(
+                ChatMessage(
+                    role = ChatRole.User,
+                    content = "Skriv følgende text mye høfligere: $message"
+                )
+            )
+        )
+        val response = openAI.chatCompletion(request)
+        return response.choices.first().message.content
+    }
+
 }

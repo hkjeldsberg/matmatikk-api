@@ -1,5 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
+
+
 plugins {
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
@@ -9,6 +12,7 @@ plugins {
     application
 }
 
+val ktorVersion = "2.3.10"
 group = "no.matmatikk"
 version = "0.0.1-SNAPSHOT"
 
@@ -28,6 +32,17 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.apache.kafka:kafka-streams")
+
+    // OpenAI
+    implementation("com.aallam.openai:openai-client:3.7.2")
+
+    // KTor
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache5:$ktorVersion")
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+    implementation("io.projectreactor:reactor-core:3.6.5")
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.8.0")
+
 
     // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")

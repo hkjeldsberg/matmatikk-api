@@ -21,7 +21,7 @@ class LocalCommandLineRunner(
     @Autowired
     private val recipeService: RecipeService,
     @Value("\${prefill}")
-    private val prefill: Boolean
+    private val prefill: Boolean,
 ) : CommandLineRunner {
     override fun run(vararg args: String?) {
         if (args.contains("PREFILL") || prefill) {
