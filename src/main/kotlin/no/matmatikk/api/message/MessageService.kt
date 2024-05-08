@@ -26,6 +26,7 @@ class MessageService(
     val log: Logger = LoggerFactory.getLogger(javaClass)
 
     fun sendMessage(message: Message) {
+        // FIXME: Save before or after Kafka processing?
         messageRepository.save(message)
         kafkaTemplate.send(topic, message.sender, message).whenComplete { record, ex ->
             if (ex != null) {
