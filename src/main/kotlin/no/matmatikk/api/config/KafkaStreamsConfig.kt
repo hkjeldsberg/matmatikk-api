@@ -83,7 +83,7 @@ class KafkaStreamsConfig {
             messages = listOf(
                 ChatMessage(
                     role = ChatRole.User,
-                    content = "Skriv følgende text mye høfligere: $message"
+                    content = "Oversett følgende tekst til spansk: $message"
                 )
             )
         )

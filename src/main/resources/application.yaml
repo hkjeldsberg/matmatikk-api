@@ -10,16 +10,21 @@ spring:
     username: sa
     password: password
 
-  # Kafka
+  # Spring kafka
   kafka:
     bootstrap-servers: localhost:9092
 
+# Kafka topics
 kafka:
   topic-in: chat-in
   topic-out: chat-out
   topic-count: chat-count
 
-  # Prefill
+# OpenAI
+openai:
+  key: ${OPENAI_KEY}
+
+# Prefill
 prefill: true
 
 # Security
@@ -27,7 +32,3 @@ jwt:
   key: ${JWT_KEY}
   access-token-expiration: 3600000
   refresh-token-expiration: 86400000
-
-# OpenAI
-openai:
-  key: ${OPENAI_KEY}

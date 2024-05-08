@@ -16,6 +16,7 @@ fun main(args: Array<String>) {
     runApplication<MatMatikkApplication>(*args)
 }
 
+
 @Component
 class LocalCommandLineRunner(
     @Autowired
