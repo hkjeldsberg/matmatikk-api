@@ -1,7 +1,7 @@
 package no.matmatikk.api.message.model
 
-class MessageResponse (
+class MessageResponse(
     val sender: String,
     val content: String,
-    val timestamp: String
+    val timestamp: Long,
 )

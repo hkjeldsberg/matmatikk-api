@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/message")
 class MessageController(
-    private val messageProducer: MessageProducer,
+    private val messageService: MessageService,
 ) {
 
     @MessageMapping("/sendMessage")
     @SendTo("/topic/message")
     fun broadcastGroupMessage(@Payload messageRequest: MessageRequest) =
-        messageProducer.sendMessage(messageRequest.toMessage())
+        messageService.sendMessage(messageRequest.toMessage())
 
 
     @PostMapping("/send")
-    suspend fun sendMessage(@RequestBody messageRequest: MessageRequest) {
-        messageProducer.sendMessage(messageRequest.toMessage())
+    fun sendMessage(@RequestBody messageRequest: MessageRequest) {
+        messageService.sendMessage(messageRequest.toMessage())
     }
+
 }

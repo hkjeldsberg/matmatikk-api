@@ -1,10 +1,29 @@
 package no.matmatikk.api.message.model
 
-data class Message(
+import jakarta.persistence.*
+
+@Entity
+@Table(name = "MESSAGES")
+ data class Message(
+    private val timestamp: Long = System.currentTimeMillis(),
     val sender: String,
     val content: String,
-    val timestamp: Long = System.currentTimeMillis()
 ) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    internal val id = "";
+
     override fun toString() =
         "Message(sender='$sender', content='$content', timestamp='$timestamp')"
+
+    fun toMessageResponse() = MessageResponse(
+        sender=sender,
+        content=content,
+        timestamp=timestamp
+    )
+
+    companion object {
+        internal fun List<Message>.toMessageResponse() = map { it.toMessageResponse() }
+    }
+
 }
