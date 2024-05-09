@@ -1,6 +1,7 @@
 package no.matmatikk.api.recipe
 
 import no.matmatikk.api.recipe.model.Recipe.Companion.toRecipeResponse
+import no.matmatikk.api.recipe.model.RecipeDescriptionRequest
 import no.matmatikk.api.recipe.model.RecipeRequest
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
@@ -24,7 +25,7 @@ class RecipeController(private val service: RecipeService) {
     }
 
     @PutMapping("/{id}")
-    fun updateRecipe(@PathVariable id: String, @RequestBody recipeRequest: RecipeRequest) {
-        service.updateRecipe(id, recipeRequest)
+    fun updateRecipe(@PathVariable id: String, @RequestBody recipeDescriptionRequest: RecipeDescriptionRequest) {
+        service.updateRecipe(id, recipeDescriptionRequest)
     }
 }

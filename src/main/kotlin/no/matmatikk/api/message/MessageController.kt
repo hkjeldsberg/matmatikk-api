@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RestController
 class MessageController(
     private val messageService: MessageService,
 ) {
-
     @MessageMapping("/sendMessage")
     @SendTo("/topic/message")
     fun broadcastGroupMessage(@Payload messageRequest: MessageRequest) =
         messageService.sendMessage(messageRequest.toMessage())
-
 
     @PostMapping("/send")
     fun sendMessage(@RequestBody messageRequest: MessageRequest) {

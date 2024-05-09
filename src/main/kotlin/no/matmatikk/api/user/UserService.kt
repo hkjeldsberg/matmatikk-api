@@ -9,6 +9,7 @@ import no.matmatikk.api.message.model.Message
 import no.matmatikk.api.user.model.Role
 import no.matmatikk.api.user.model.User
 import no.matmatikk.api.user.model.UserRequest
+import no.matmatikk.api.utils.EmailValidator
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.context.SecurityContextHolder
