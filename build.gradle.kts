@@ -1,8 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
-
-
 plugins {
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
@@ -13,6 +11,9 @@ plugins {
 }
 
 val ktorVersion = "2.3.10"
+val mockkVersion = "1.13.10"
+val kotestVersion = "5.8.1"
+
 group = "no.matmatikk"
 version = "0.0.1-SNAPSHOT"
 
@@ -30,13 +31,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+
+    // Kafka
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.apache.kafka:kafka-streams")
 
     // OpenAI
     implementation("com.aallam.openai:openai-client:3.7.2")
 
-    // KTor
+    // KTor / HTTP
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache5:$ktorVersion")
     implementation("org.reactivestreams:reactive-streams:1.0.4")
@@ -56,8 +59,11 @@ dependencies {
     // DB
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core")
 
     // Test
+    testImplementation("io.mockk:mockk:${mockkVersion}")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 }
