@@ -13,9 +13,6 @@ import jakarta.persistence.*
     @GeneratedValue(strategy = GenerationType.UUID)
     internal val id = "";
 
-    override fun toString() =
-        "Message(sender='$sender', content='$content', timestamp='$timestamp')"
-
     fun toMessageResponse() = MessageResponse(
         sender=sender,
         content=content,

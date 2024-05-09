@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: matmatikk-api
+  # DB
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:matmatikk-api
+    username: sa
+    password: password
+
+  # Spring kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  # Flyway (DB migration)
+  flyway:
+    clean-disabled: false
+
+# Kafka topics
+kafka:
+  topic-in: chat-in
+  topic-out: chat-out
+  topic-count: chat-count
+
+# OpenAI
+openai:
+  key: ${OPENAI_KEY}
+
+# Prefill
+prefill: false
+
+# Security
+jwt:
+  key: ${JWT_KEY}
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000

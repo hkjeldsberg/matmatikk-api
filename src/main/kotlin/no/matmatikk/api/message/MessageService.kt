@@ -50,7 +50,6 @@ class MessageService(
     fun consumeMessage(messageRecord: ConsumerRecord<String, Message>) {
         log.info("Message received: ${messageRecord.value().content}")
         template.convertAndSend("/topic/message", messageRecord.value())
-
     }
 
     @KafkaListener(
