@@ -2,8 +2,10 @@ package no.matmatikk.api.user
 
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import no.matmatikk.api.exceptions.InvalidEmailFormatException
+import no.matmatikk.api.exceptions.UserNotFoundByEmailException
 import no.matmatikk.api.exceptions.UserNotFoundException
 import no.matmatikk.api.exceptions.UserWithEmailExistException
 import no.matmatikk.api.utils.getMockUserRequest
@@ -12,7 +14,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
+import java.security.Principal
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -28,16 +33,28 @@ class UserServiceTest(
 
     @Test
     fun `Get current user should return current user`() {
+        val user = userService.registerUser(getMockUserRequest())
+        val email = user.toUserResponse().email
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(MockPrincipal(email), null)
 
+        user.toUserResponse() shouldBe userService.getCurrentUser().toUserResponse()
+
+        SecurityContextHolder.clearContext()
     }
 
     @Test
     fun `Get current user should throw UserNotFoundException if no user is found on SecurityContext`() {
-
+        shouldThrow<UserNotFoundException> { userService.getCurrentUser().toUserResponse() }
     }
 
     @Test
     fun `Get current user should throw UserNotFoundByEmailException if no user is found by email`() {
+        val email = "email.without.user@com"
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(MockPrincipal(email), null)
+
+        shouldThrow<UserNotFoundByEmailException>{ userService.getCurrentUser().toUserResponse()}
 
     }
 
@@ -78,4 +95,8 @@ class UserServiceTest(
 
         userService.getMessages(user.id).isEmpty() shouldBe true
     }
+}
+
+class MockPrincipal(private val email: String) : Principal {
+    override fun getName() = email
 }
