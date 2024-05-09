@@ -46,9 +46,14 @@ class UsernameNotFoundException(email: String) : CustomRuntimeException(
     status = NOT_FOUND
 )
 
-
-class UserExistException(email: String) : CustomRuntimeException(
+class UserWithEmailExistException(email: String) : CustomRuntimeException(
     message = "User with email=$email already exist",
+    name = "UserWithEmailExistException",
+    status = CONFLICT
+)
+
+class UserExistException(id: String) : CustomRuntimeException(
+    message = "User with id=$id already exist",
     name = "UserExistException",
     status = CONFLICT
 )

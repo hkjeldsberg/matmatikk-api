@@ -4,9 +4,9 @@ import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import no.matmatikk.api.exceptions.InvalidEmailFormatException
-import no.matmatikk.api.exceptions.UserExistException
 import no.matmatikk.api.exceptions.UserNotFoundException
-import no.matmatikk.api.user.model.UserRequest
+import no.matmatikk.api.exceptions.UserWithEmailExistException
+import no.matmatikk.api.utils.getMockUserRequest
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,41 +27,55 @@ class UserServiceTest(
     }
 
     @Test
-    fun `Register user should throw InvalidEmailException when email has invalid format`() {
-        val mockUserRequest = UserRequest(
-            firstName = "firstName",
-            lastName = "lastName",
-            password = "password",
-            email = "invalid.email.com"
-        )
+    fun `Get current user should return current user`() {
 
-        shouldThrow<InvalidEmailFormatException> { userService.registerUser(mockUserRequest) }
     }
 
     @Test
-    fun `Register user should throw UserExistException when user already exists`() {
-        val mockUserRequest = UserRequest(
-            firstName = "firstName",
-            lastName = "lastName",
-            password = "password",
-            email = "valid@email.com"
-        )
+    fun `Get current user should throw UserNotFoundException if no user is found on SecurityContext`() {
+
+    }
+
+    @Test
+    fun `Get current user should throw UserNotFoundByEmailException if no user is found by email`() {
+
+    }
+
+    @Test
+    fun `Get user should throw UserNotFoundException if user not found`() {
+
+    }
+
+    @Test
+    fun `Register user should throw InvalidEmailException when email has invalid format`() {
+        val mockUserRequestWithInvalidEmail = getMockUserRequest(email = "invalid.email.com")
+
+        shouldThrow<InvalidEmailFormatException> { userService.registerUser(mockUserRequestWithInvalidEmail) }
+    }
+
+    @Test
+    fun `Register user should throw UserWithEmailExistException when user already exists`() {
+        val mockUserRequest = getMockUserRequest()
         userService.registerUser(mockUserRequest)
 
-        shouldThrow<UserExistException> { userService.registerUser(mockUserRequest) }
+        shouldThrow<UserWithEmailExistException> { userService.registerUser(mockUserRequest) }
     }
 
     @Test
     fun `Register new user`() {
-        val mockUserRequest = UserRequest(
-            firstName = "firstName",
-            lastName = "lastName",
-            password = "password",
-            email = "valid@email.com"
-        )
-
-        val registeredUser = userService.registerUser(mockUserRequest)
+        val registeredUser = userService.registerUser(getMockUserRequest())
         shouldNotThrow<UserNotFoundException> { userService.getUser(registeredUser.id) }
         userService.getUser(registeredUser.id).id shouldBe registeredUser.id
+    }
+
+    @Test
+    fun `Get messages should return a list of messages when messages are present`() {
+    }
+
+    @Test
+    fun `Get messages should return an empty list of messages when no messages are present`() {
+        val user = userService.registerUser(getMockUserRequest())
+
+        userService.getMessages(user.id).isEmpty() shouldBe true
     }
 }

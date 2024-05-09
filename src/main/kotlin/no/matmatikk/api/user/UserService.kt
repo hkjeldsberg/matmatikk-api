@@ -1,8 +1,9 @@
 package no.matmatikk.api.user
 
 import no.matmatikk.api.exceptions.InvalidEmailFormatException
-import no.matmatikk.api.exceptions.UserExistException
+import no.matmatikk.api.exceptions.UserNotFoundByEmailException
 import no.matmatikk.api.exceptions.UserNotFoundException
+import no.matmatikk.api.exceptions.UserWithEmailExistException
 import no.matmatikk.api.message.MessageRepository
 import no.matmatikk.api.message.model.Message
 import no.matmatikk.api.user.model.Role
@@ -25,11 +26,15 @@ class UserService(
     internal fun getCurrentUser(): User {
         val context = SecurityContextHolder.getContext()
         val id = context.authentication?.name ?: throw UserNotFoundException("Authenticated user ID not found")
-        return userRepository.findByEmail(id) ?: throw UserNotFoundException("User not found with ID: $id")
+        return getUserByEmail(id)
     }
 
-    internal fun getUser(userId: String) = userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException(userId)
+    internal fun getUser(userId: String) =
+        userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException(userId)
 
+
+    internal fun getUserByEmail(email: String) =
+        userRepository.findByEmail(email) ?: throw UserNotFoundByEmailException(email)
 
     internal fun registerUser(userRequest: UserRequest): User {
         if (!EmailValidator.validateEmail(userRequest.email)) {
@@ -37,7 +42,7 @@ class UserService(
         }
 
         if (userRepository.findByEmail(userRequest.email) != null) {
-            throw UserExistException(userRequest.email)
+            throw UserWithEmailExistException(userRequest.email)
         }
 
         val newUser = User(
