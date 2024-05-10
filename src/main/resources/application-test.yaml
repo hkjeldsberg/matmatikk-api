@@ -26,13 +26,13 @@ kafka:
 
 # OpenAI
 openai:
-  key: ${OPENAI_KEY}
+  key: openai-key
 
 # Prefill
 prefill: false
 
 # Security
 jwt:
-  key: ${JWT_KEY}
+  key: jwt-key
   access-token-expiration: 3600000
   refresh-token-expiration: 86400000
