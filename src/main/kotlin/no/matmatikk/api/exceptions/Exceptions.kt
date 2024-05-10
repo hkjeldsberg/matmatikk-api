@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus.*
 open class CustomRuntimeException(
     override val message: String,
     val name: String,
-    val status: HttpStatus
+    val status: HttpStatus,
 ) : RuntimeException(message)
 
 fun CustomRuntimeException.toExceptionResponseMap(): Map<String, Any> {
@@ -68,4 +68,10 @@ class CustomKafkaException(message: String?) : CustomRuntimeException(
     message = message ?: "Kafka producer/consumer threw an exception",
     name = "CustomKafkaException",
     status = BAD_REQUEST
+)
+
+class MessageNotFoundException(id: String) : CustomRuntimeException(
+    message = "Message with id=$id not found",
+    name = "MessageNotFoundException",
+    status = NOT_FOUND
 )

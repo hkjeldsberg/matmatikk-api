@@ -1,12 +1,14 @@
 package no.matmatikk.api.message
 
 import no.matmatikk.api.exceptions.CustomKafkaException
+import no.matmatikk.api.exceptions.MessageNotFoundException
 import no.matmatikk.api.message.model.Message
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -26,6 +28,8 @@ class MessageService(
     val log: Logger = LoggerFactory.getLogger(javaClass)
 
     fun saveMessage(message: Message) = messageRepository.save(message)
+
+    fun getMessage(id: String) = messageRepository.findByIdOrNull(id) ?: throw MessageNotFoundException(id)
 
     fun sendMessage(message: Message) {
         // FIXME: Save before or after Kafka processing?

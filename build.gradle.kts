@@ -62,10 +62,10 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
 
     // Test
-    testImplementation("io.mockk:mockk:${mockkVersion}")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 application {
